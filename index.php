@@ -26,11 +26,9 @@
     // Exécution de la requête SQL pour récupérer les données de la table "pokemon"
     $select = $connection->query("SELECT * FROM pokemon");
     $pokemons = $select->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Affiche les données en html
     foreach ($pokemons as $pokemon) {
-        echo "<h1>{$pokemon['pokemon_id']}</h1>";
-        echo "<h2>{$pokemon['pokemon_nom']}</h2>";
-
+        echo "<h1>{$pokemon['pokemon_id']} : {$pokemon['pokemon_nom']}</h1>";
     }
 ?>
