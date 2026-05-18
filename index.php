@@ -34,11 +34,27 @@
     foreach ($pokemons as $pokemon) {
         echo "
         <div>
-            <img src='{$pokemon['pokemon_img']}' alt='Image de {$pokemon['pokemon_nom']}'>
-            <h1>N° {$pokemon['pokemon_id']} : {$pokemon['pokemon_nom']}</h1>
-            <h3>Poids : {$pokemon['pokemon_poids']}, Taille : {$pokemon['pokemon_taille']}</h3>
-            <p>Description : {$pokemon['pokemon_description']}</p>
-
+            <img src='{$pokemon->pokemon_img}' alt='Image de {$pokemon->pokemon_nom}'>
+            <h1>N° {$pokemon->pokemon_id} : {$pokemon->pokemon_nom}</h1>
+            <h3>Poids : {$pokemon->pokemon_poids}, Taille : {$pokemon->pokemon_taille}</h3>
+            <p>Description : {$pokemon->pokemon_description}</p>
         </div>";
     }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Pokedex</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <main>
+        
+    </main>
+</body>
+</html>
