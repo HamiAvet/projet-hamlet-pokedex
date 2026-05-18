@@ -1,4 +1,5 @@
 <?php
+    $id = $_GET['id'];
     // Chargement des variables d'environnement à partir du fichier .env
     require_once __DIR__ . '/vendor/autoload.php';
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -26,22 +27,24 @@
         echo "Erreur de connexion à la base de données : {$ex->getMessage()}";
     }
 
+    $select = $connection->prepare("SELECT * FROM pokemon WHERE pokemon_id = :id");
+    $select->bindValue(':id', $id, PDO::PARAM_INT);
 
+    $select->execute();
 
-    // Exécution de la requête SQL pour récupérer les données de la table "pokemon"
-    $select = $connection->query("SELECT * FROM pokemon");
-    $pokemons = $select->fetchAll(PDO::FETCH_ASSOC);
+    $pokemons = $select->fetchAll(PDO::FETCH_OBJ);
 
-    // Affiche les données en html
-    foreach ($pokemons as $pokemon) {
-        echo "
-        <div>
-            <a href='./ajout.php'>Ajouter un Pokémon</a>
-            <img src='{$pokemon['pokemon_img']}' alt='Image de {$pokemon['pokemon_nom']}'>
-            <h1>N° {$pokemon['pokemon_id']} : {$pokemon['pokemon_nom']}</h1>
-            <h3>Poids : {$pokemon['pokemon_poids']}, Taille : {$pokemon['pokemon_taille']}</h3>
-            <p>Description : {$pokemon['pokemon_description']}</p>
-            <a href='detail.php?id={$pokemon['pokemon_id']}'>Voir les détails</a>
-        </div>";
-    }
+    /*echo "<pre>";
+    print_r($pokemon);
+    echo "</pre>"*/
+
+    $pokemon = $pokemons[0];
+
+    echo "<div>
+        <h1>{$pokemon->pokemon_nom}</h1>
+        <img src='{$pokemon->pokemon_img}' alt='Image de {$pokemon->pokemon_nom}'>
+        <p><b>Taille : </b>{$pokemon->pokemon_taille}</p>
+        <p><b>Poids : </b>{$pokemon->pokemon_poids}</p>
+        <p><b>Description : </b>{$pokemon->pokemon_description}</p>
+    </div>";
 ?>
