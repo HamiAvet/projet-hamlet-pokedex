@@ -26,8 +26,6 @@
         echo "Erreur de connexion à la base de données : {$ex->getMessage()}";
     }
 
-
-
     // Exécution de la requête SQL pour récupérer les données de la table "pokemon"
     $select = $connection->query("SELECT * FROM pokemon");
     $pokemons = $select->fetchAll(PDO::FETCH_ASSOC);
@@ -45,3 +43,35 @@
         </div>";
     }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            width: 100%;
+            background-color: #EF4036;
+            color: #fff;
+            padding: 1rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+
+    </nav>
+</body>
+</html>

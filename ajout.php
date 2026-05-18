@@ -1,5 +1,4 @@
 <?php
-    $id = $_GET['id'];
     // Chargement des variables d'environnement à partir du fichier .env
     require_once __DIR__ . '/vendor/autoload.php';
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -27,14 +26,38 @@
         echo "Erreur de connexion à la base de données : {$ex->getMessage()}";
     }
 
-    $select = $connection->prepare("SELECT * FROM pokemon WHERE pokemon_id = :id");
-    $select->bindValue(':id', $id, PDO::PARAM_INT);
+    // Vérifie si le formulaire a été soumis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Récupère les données du formulaire
+        $nomNouveauPokemon = $_POST['pokemon_nom'];
+        $imgNouveauPokemon = $_POST['pokemon_img'];
+        $tailleNouveauPokemon = $_POST['pokemon_taille'];
+        $poidsNouveauPokemon = $_POST['pokemon_poids'];
+        $descriptionNouveauPokemon = $_POST['pokemon_description'];
 
-    $select->execute();
+        // Appelle la fonction pour ajouter le nouveau Pokémon à la base de données
+        ajouterPokemon($connection, $nomNouveauPokemon, $imgNouveauPokemon, $tailleNouveauPokemon, $poidsNouveauPokemon, $descriptionNouveauPokemon);
+    }
+    
+    // Fonction pour ajouter un nouveau Pokémon à la base de données
+    function ajouterPokemon($connection, $nom, $img, $taille, $poids, $description) {
+        // Prépare la requête d'insertion
+        $insert = $connection->prepare("INSERT INTO pokemon (pokemon_nom, pokemon_img, pokemon_taille, pokemon_poids, pokemon_description) VALUES (:nom, :img, :taille, :poids, :description)");
+        
+        // Lie les valeurs aux paramètres de la requête
+        $insert->bindValue(':nom', $nom);
+        $insert->bindValue(':img', $img);
+        $insert->bindValue(':taille', $taille);
+        $insert->bindValue(':poids', $poids);
+        $insert->bindValue(':description', $description);
 
-    $pokemons = $select->fetchAll(PDO::FETCH_OBJ);
+        // Exécute la requête d'insertion
+        $insert->execute();
 
+        echo "<p>Le Pokémon a été ajouté avec succès !</p>";
+    }
 
+   
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +70,7 @@
 <body>
     <main>
         <h1>Détails du Pokémon</h1>
-        <form method="post">
+        <form method="POST">
             <div>
                 <label for="pokemon_nom">Nom du Pokémon :</label>
                 <input type="text" id="pokemon_nom" name="pokemon_nom" placeholder="Pikachu">
@@ -70,7 +93,9 @@
             </div>
             <div>
                 <button type="submit">Ajouter</button>
+                <a href="index.php">Retour à la liste</a>
             </div>
+            <?php?>
         </form>
     </main>
 </body>
